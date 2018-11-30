@@ -15,5 +15,5 @@ python3 vizualizer.py [/path/to/pose_data.txt]
 e.g. (python3 vizualizer.py ./RealEstate10K/test/0c4c5d5f751aabf5.txt)
 ```
 
-RealEstate10K(including images) is very large. Please be careful.　　　
+RealEstate10K(including images) is very large. Please be careful.    
 Pleaes use this at your own risk.
