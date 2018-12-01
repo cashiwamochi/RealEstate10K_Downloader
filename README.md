@@ -1,8 +1,8 @@
 # RealEstate10K_downloader
-These scripts are used to download RealEstate10K dataset manually. 
+These scripts are used to download RealEstate10K dataset. 
 
 ## How to use   
-At first, you should download [RealEstate10K](https://google.github.io/realestate10k/download.html) and extract here.   
+At first, you should download [RealEstate10K](https://google.github.io/realestate10k/download.html) and extract here manually.   
 ```shell
 sh ./prepare.sh
 python3 generate_dataset.py [test or train]
