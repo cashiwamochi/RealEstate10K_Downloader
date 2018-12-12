@@ -2,6 +2,7 @@ videos
 RealEstate10K
 RealEstate10K.tar.gz
 generate_dataset_bk.py
+compute_size.py
 *.png
 *.txt
 *.mp4
