@@ -133,19 +133,20 @@ class DataDownloader:
             command = "rm " + videoname 
             os.system(command)
 
-            if global_count == 2:
-                break
-
             return True
 
     def Show(self):
         print("########################################")
+        global_count = 0
         for data in self.list_data:
             print(" URL : {}".format(data.url))
             for idx in range(len(data)):
                 print(" SEQ_{} : {}".format(idx, data.list_seqnames[idx]))
                 print(" LEN_{} : {}".format(idx, len(data.list_list_timestamps[idx])))
+                global_count = global_count + 1
             print("----------------------------------------")
+
+        print("TOTAL : {} sequnces".format(global_count))
 
 if __name__ == "__main__":
 
@@ -165,7 +166,11 @@ if __name__ == "__main__":
     downloader = DataDownloader(dataroot, mode)
 
     downloader.Show()
-    downloader.Run()
+    isOK = downloader.Run()
 
-    print("Done!")
+    if isOK:
+        print("Done!")
+    else:
+        print("Failed")
+
 
