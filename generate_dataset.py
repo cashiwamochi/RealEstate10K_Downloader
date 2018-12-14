@@ -133,7 +133,7 @@ class DataDownloader:
             command = "rm " + videoname 
             os.system(command)
 
-            return True
+        return True
 
     def Show(self):
         print("########################################")
