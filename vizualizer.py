@@ -11,7 +11,7 @@ def main(filepath):
     text_data = open(filepath, "r") 
     lines = text_data.readlines()
 
-    scale = 0.01
+    scale = 0.1
     origin_coordinate = o3d.create_mesh_coordinate_frame(size = 0.15, origin = [0,0,0])
     coordinates_list = [origin_coordinate]
     for i, line in enumerate(lines):

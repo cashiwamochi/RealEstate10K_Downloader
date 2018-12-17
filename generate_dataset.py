@@ -29,7 +29,7 @@ class DataDownloader:
         print("[INFO] Loading data list ... ",end='')
         self.dataroot = dataroot
         self.list_seqnames = sorted(glob.glob(dataroot + '/*.txt'))
-        self.output_root = './debug/' + mode + '/'
+        self.output_root = './dataset/' + mode + '/'
         self.mode =  mode
 
         self.isDone = False
@@ -80,7 +80,7 @@ class DataDownloader:
                 # sometimes this fails because of known to issues of pytube and unknown factors
                 yt = YouTube(data.url)
                 stream = yt.streams.first()
-                stream.download('./','current')
+                stream.download('./','current_'+mode)
             except :
                 failure_log = open('failed_videos_'+mode+'.txt', 'a')
                 for seqname in data.list_seqnames:
@@ -90,9 +90,10 @@ class DataDownloader:
 
             videoname_candinate_list = glob.glob('./*')
             for videoname_candinate in videoname_candinate_list:
-                if videoname_candinate.split('.')[-2] == '/current':
+                if videoname_candinate.split('.')[-2] == '/current_'+mode:
                     videoname = videoname_candinate
 
+            # this loop can be done in multiprocess or threads
             for seq_id in range(len(data)):
                 seqname = data.list_seqnames[seq_id]
                 if not os.path.exists(self.output_root + seqname):
@@ -114,13 +115,10 @@ class DataDownloader:
 
                 # extract frames from a video
                 for idx, str_timestamp in enumerate(list_str_timestamps):
-                    print(" idx ", idx )
-                    print(" timestamp ", str_timestamp)
-                    print(" timestamp ", str(data.list_list_timestamps[seq_id][idx]))
                     command = 'ffmpeg -ss '+str_timestamp+' -i '+videoname+' -vframes 1 -f image2 '+self.output_root+'/'+seqname+'/'+str(data.list_list_timestamps[seq_id][idx])+'.png'
                     os.system(command)
 
-                png_list = glob.glob(self.output_root+"/*.png")
+                png_list = glob.glob(self.output_root+"/"+seqname+"/*.png")
 
                 for pngname in png_list:
                     img = cv2.imread(pngname, 1)
