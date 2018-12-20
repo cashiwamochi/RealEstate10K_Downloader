@@ -5,7 +5,7 @@ import subprocess
 import datetime
 
 import cv2
-import joblib
+from multiprocessing import Pool
 from pytube import YouTube
 from time import sleep
 
@@ -61,6 +61,8 @@ def process(data, seq_id, videoname, output_root):
 
     return False
 
+def wrap_process(list_args):
+    return process(*list_args)
 
 class DataDownloader:
     def __init__ (self, dataroot, mode='test'):
@@ -138,19 +140,15 @@ class DataDownloader:
                     videoname = videoname_candinate
 
             if len(data) == 1: # len(data) is len(data.list_seqnames)
-                flag = process(data, 0, videoname, self.output_root)
-                list_flags = []
-                list_flags.append(flag)
+                process(data, 0, videoname, self.output_root)
             else:
-                list_flags = joblib.Parallel(n_jobs=4,backend="multiprocessing")([joblib.delayed(process)(data, seq_id, videoname, self.output_root) for seq_id in range(len(data))])
+                with Pool(processes=4) as pool:
+                    pool.map(wrap_process, [(data, seq_id, videoname, self.output_root) for seq_id in range(len(data))])
+                # list_flags = joblib.Parallel(n_jobs=4,backend="multiprocessing")([joblib.delayed(process)(data, seq_id, videoname, self.output_root) for seq_id in range(len(data))])
 
             # remove videos
             command = "rm " + videoname 
             os.system(command)
-
-            for flag in list_flags:
-                if flag:
-                    self.isDone =  True
 
             if self.isDone:
                 return False
