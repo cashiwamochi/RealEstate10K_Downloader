@@ -4,7 +4,9 @@ import glob
 import subprocess
 import datetime
 
-import cv2
+from skimage import io
+from scipy.misc import imresize
+
 from multiprocessing import Pool
 from pytube import YouTube
 from time import sleep
@@ -53,11 +55,20 @@ def process(data, seq_id, videoname, output_root):
     png_list = glob.glob(output_root+"/"+seqname+"/*.png")
 
     for pngname in png_list:
-        img = cv2.imread(pngname, 1)
-        if int(img.shape[1]/2) < 500:
+        image = io.imread(pngname)
+        if int(image.shape[1]/2) < 500:
             break
-        img = cv2.resize(img, (int(img.shape[1]/2), int(img.shape[0]/2)))
-        cv2.imwrite(pngname, img)
+        image = imresize(image, (int(image.shape[0]/2), int(image.shape[1]/2)), interp='bilinear')
+        io.imsave(pngname, image)
+        
+        # In my case, the same issue happened.
+        # https://github.com/skvark/opencv-python/issues/69
+        # Do Not use opencv function in something in parallel process.
+        # img = cv2.imread(pngname, 1)
+        # if int(img.shape[1]/2) < 500:
+        #     break
+        # img = cv2.resize(img, (int(img.shape[1]/2), int(img.shape[0]/2)))
+        # cv2.imwrite(pngname, img)
 
     return False
 
@@ -131,7 +142,6 @@ class DataDownloader:
                 failure_log.close()
                 continue
 
-            # cv2.waitKey(1500)
             sleep(1)
 
             videoname_candinate_list = glob.glob('./*')
