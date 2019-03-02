@@ -63,7 +63,6 @@ def process(data, seq_id, videoname, output_root):
         
         # In my case, the same issue happened.
         # https://github.com/skvark/opencv-python/issues/69
-        # Do Not use opencv function in something in parallel process.
         # img = cv2.imread(pngname, 1)
         # if int(img.shape[1]/2) < 500:
         #     break
