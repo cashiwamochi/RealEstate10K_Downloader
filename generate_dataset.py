@@ -130,7 +130,7 @@ class DataDownloader:
         for global_count, data in enumerate(self.list_data):
             print("[INFO] Downloading {} ".format(data.url))
             try :
-                # sometimes this fails because of known to issues of pytube and unknown factors
+                # sometimes this fails because of known issues of pytube and unknown factors
                 yt = YouTube(data.url)
                 stream = yt.streams.first()
                 stream.download('./','current_'+mode)
