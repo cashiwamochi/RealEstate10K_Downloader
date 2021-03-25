@@ -78,7 +78,6 @@ class DataDownloader:
         print("[INFO] Loading data list ... ", end='')
         self.dataroot = dataroot
         self.list_seqnames = sorted(glob.glob(dataroot + '/cameras/*.txt'))
-        print(self.list_seqnames)
         self.output_root = os.path.join(dataroot, 'frames/')
         self.mode = mode
         os.makedirs(self.output_root, exist_ok=True)
@@ -170,8 +169,4 @@ if __name__ == "__main__":
     print(dataroot)
     downloader = DataDownloader(dataroot, mode)
     isOK = downloader.Run()
-    if isOK:
-        print("Done!")
-    else:
-        print("Failed")
 
