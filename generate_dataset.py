@@ -77,8 +77,9 @@ class DataDownloader:
     def __init__(self, dataroot, mode='test'):
         print("[INFO] Loading data list ... ", end='')
         self.dataroot = dataroot
-        self.list_seqnames = sorted(glob.glob(dataroot + '/*.txt'))
-        self.output_root = os.path.join(dataroot, mode, 'frames/')
+        self.list_seqnames = sorted(glob.glob(dataroot + '/cameras/*.txt'))
+        print(self.list_seqnames)
+        self.output_root = os.path.join(dataroot, 'frames/')
         self.mode = mode
         os.makedirs(self.output_root, exist_ok=True)
 
@@ -166,6 +167,7 @@ if __name__ == "__main__":
         quit()
 
     dataroot = os.path.join("../RealEstate10K-subset/", mode)
+    print(dataroot)
     downloader = DataDownloader(dataroot, mode)
     isOK = downloader.Run()
     if isOK:
