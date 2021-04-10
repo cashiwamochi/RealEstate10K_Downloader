@@ -89,9 +89,9 @@ class DataDownloader:
             for txt_file in self.list_seqnames:
                 dir_name = txt_file.split('/')[-1]
                 seq_name = dir_name.split('.')[0]
-                if os.path.isdir(os.path.join(self.output_root, seq_name)):
-                    print('{} finished, skip'.format(seq_name))
-                    continue
+                #if os.path.isdir(os.path.join(self.output_root, seq_name)):
+                #    print('{} finished, skip'.format(seq_name))
+                #    continue
 
                 # extract info from txt
                 seq_file = open(txt_file, "r")
