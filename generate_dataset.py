@@ -131,6 +131,8 @@ class DataDownloader:
             print("[INFO] Downloading {} ".format(data.url))
             try :
                 # sometimes this fails because of known issues of pytube and unknown factors
+                # `pip uninstall pytube` and `pip install pytube` again would solve the problem 
+                # because the latest version has a patch to fix the issue
                 yt = YouTube(data.url)
                 stream = yt.streams.first()
                 stream.download('./','current_'+mode)
@@ -143,10 +145,13 @@ class DataDownloader:
 
             sleep(1)
 
+            videoname = ""
             videoname_candinate_list = glob.glob('./*')
             for videoname_candinate in videoname_candinate_list:
-                if videoname_candinate.split('.')[-2] == '/current_'+mode:
+                if videoname_candinate.split('.')[-1] == '/current_' + mode:
                     videoname = videoname_candinate
+            if videoname == "":
+                raise Exception("Video name doesn't exist")
 
             if len(data) == 1: # len(data) is len(data.list_seqnames)
                 process(data, 0, videoname, self.output_root)
